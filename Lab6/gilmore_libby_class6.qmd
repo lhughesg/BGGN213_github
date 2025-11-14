@@ -1,0 +1,139 @@
+---
+title: "Class 06: R functions"
+author: "Libby Gilmore (PID: A69047570)"
+format: pdf
+editor: visual
+toc: true
+---
+
+All functions in R have at least 3 things:
+
+- A **name**, we pick this and use it to call our function,
+- Input **arguments** (there can be multiple)
+- The **body** lines of R code that do the work
+
+### Our first (silly) function
+
+Write a function to add some numbers
+
+```{r}
+# some functions have parameters that are absolutely required, others you can build defaults into, so they will still work if the user does not specify all the arguments
+add <- function(x, y=1) {
+  x + y
+}
+```
+
+Now we can call this function:
+
+```{r}
+add(10) # uses default argument for y, adds 1 by default
+
+add(12,7) # sets x and y arguments, and adds them together
+
+#add(10,10,100) # Error in add(10, 10, 100) : unused argument (100)
+
+add(c(10,10),100) # alternative to get 100 to add to each element of x vector
+```
+
+## A second function
+
+Write a function to generate random nucleotide sequences of a user specified length:
+
+the `sample()` function can be helpful here.
+```{r}
+# will keep giving you 3 random letters, BUT as replace=FALSE, it'll produce an error if length is over 4
+sample(c("A", "C", "G", "T"), size=3) 
+  
+# with replacement on, you can get a longer sampling
+sample(c("A", "C", "G", "T"), size=100, replace=TRUE) 
+```
+
+I want a 1 element long character vector that looks like "CACAGC" and not "C" "A" "C" "A" "G" "C"
+
+
+```{r}
+# v <- sample(c("A", "C", "G", "T"), size=100, replace=TRUE) 
+# paste(v, collapse="")
+
+generate_DNA <- function(size=50){
+  nucleotides <- c("A", "C", "G", "T")
+  x <- sample(nucleotides, size, replace = TRUE)
+  paste(x, collapse="")
+}
+
+```
+Test it:
+```{r}
+generate_DNA(60)
+```
+
+```{r}
+# used for flow control
+fasta<-FALSE # when TRUE it returns the first clause
+if(fasta){
+  cat("HELLO You!")
+} else {
+  cat("No you don't")
+  
+}
+
+```
+Add the ability to return a mutli-element vector or a single element fasta like vector.
+
+```{r}
+generate_fasta <- function(size=50, fasta=TRUE){
+  nucleotides <- c("A", "C", "G", "T")
+  v <- sample(nucleotides, size, replace = TRUE)
+  if(fasta){
+    return(paste(v, collapse="")) # you can also return without return and just the variable, but for future readability it is better
+  } else{
+    return(v)
+  }
+}
+```
+Test generate_fasta():
+```{r}
+generate_fasta(50, FALSE)
+generate_fasta(20, TRUE)
+```
+
+
+## A protein generating function
+
+```{r}
+# generates a random protein vector
+generate_protein <- function(size=50, fasta=TRUE){
+  amino_acids <- c("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", 
+                   "L", "K", "M", "F", "P", "S", "T", "W", "Y", "V")
+  v <- sample(amino_acids, size, replace = TRUE)
+  if(fasta){
+    return(paste(v, collapse=""))
+  } else{
+    return(v)
+  }
+}
+```
+
+```{r}
+generate_protein(6)
+```
+Use our new `generate_protein()` function to make random protein sequences of length 6 to 12 (i.e. one length 6, one length 7, etc. up to length 12)
+
+```{r}
+lengths <- 6:12
+lengths
+```
+
+```{r}
+for (i in lengths) {
+  cat(">", i, "\n", sep="")
+  aa <- generate_protein(i)
+  cat(aa)
+  cat("\n")
+}
+```
+
+```{r}
+# but the `apply` functions are typically more efficient than `for loops`
+sapply(lengths, generate_protein)
+```
