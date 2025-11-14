@@ -1,0 +1,109 @@
+---
+title: "Class 11: Structural Bioinformatics pt2."
+author: "Libby Gilmore (A69047570)"
+prefer-html: true
+format: pdf
+editor: visual
+---
+
+We saw last day that the PDB has 209,886 entries (Oct/Nov 2025). UniProtKB (i.e. protein sequence database) has 199,579,901 entries
+
+```{r}
+100 * 209886/199579901
+```
+
+So the PDB has 0.1% coverage of the main sequence database
+
+Enter AlphaFold data base (AFDB) <https://alphafold.ebi.ac.uk/> that attemps to provide computed models for all sequences in UniProt.
+
+## AlphaFold
+
+AlphaFold has 3 main outputs
+
+-   the predicted coordinates (PDB files)
+-   A local quality score called **pLDDT** (one for each amino-acid)
+-   A second quality score **PAE** Predicted Aligned Error (for each pair of amino-acid)
+
+We can run alphaFold ourselves if we are not happy with afdb (i.e. no coverage or poor model)
+
+## Interpreting/ Analyzing AF results in R
+
+```{r}
+# Change this for YOUR results dir name
+results_dir <- "HIVPR_dimer_23119/" 
+```
+
+```{r}
+# File names for all PDB models
+pdb_files <- list.files(path=results_dir,
+                        pattern="*.pdb",
+                        full.names = TRUE)
+
+# Print our PDB file names
+basename(pdb_files)
+```
+
+```{r}
+library(bio3d)
+library(bio3dview)
+
+# Read all data from Models 
+#  and superpose/fit coords
+pdbs <- pdbaln(pdb_files, fit=TRUE, exefile="msa")
+```
+
+```{r, eval = knitr::is_html_output()}
+view.pdbs(pdbs)
+```
+
+```{r}
+rd <- rmsd(pdbs, fit=T)
+
+range(rd)
+```
+
+```{r}
+library(pheatmap)
+
+colnames(rd) <- paste0("m",1:5)
+rownames(rd) <- paste0("m",1:5)
+pheatmap(rd)
+```
+
+```{r}
+# Read a reference PDB structure
+pdb <- read.pdb("1hsg")
+```
+
+```{r}
+plotb3(pdbs$b[1,], typ="l", lwd=2, sse=pdb)
+points(pdbs$b[2,], typ="l", col="red")
+points(pdbs$b[3,], typ="l", col="blue")
+points(pdbs$b[4,], typ="l", col="darkgreen")
+points(pdbs$b[5,], typ="l", col="orange")
+abline(v=100, col="gray")
+```
+
+```{r}
+core <- core.find(pdbs)
+
+core.inds <- print(core, vol=0.5)
+
+xyz <- pdbfit(pdbs, core.inds, outpath="corefit_structures")
+```
+
+```{r}
+rf <- rmsf(xyz)
+
+plotb3(rf, sse=pdb)
+abline(v=100, col="gray", ylab="RMSF")
+```
+
+```{r}
+library(jsonlite)
+
+# Listing of all PAE JSON files
+pae_files <- list.files(path=results_dir,
+                        pattern=".*model.*\\.json",
+                        full.names = TRUE)
+```

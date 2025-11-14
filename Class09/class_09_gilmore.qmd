@@ -1,0 +1,278 @@
+---
+title: "Class 09: Structural Bioinformatics (Pt. 1)"
+author: "Libby Gilmore (A69047570)"
+format: html
+toc: true
+date: today
+editor: visual
+prefer-html: true
+---
+
+
+```{r libraries}
+library(readr)
+library(ggplot2)
+```
+
+## Section 1: PDB database
+
+The main repository for biomolecular structure data is the Protein Data Bank (PDB) https://www.rcsb.org
+
+Let's have a quick look at the composition of this database:
+
+
+### PDB statistics
+
+> Q1: What percentage of structures in the PDB are solved by X-Ray and Electron Microscopy.
+
+```{r}
+pdb_stats <- read_csv("Data Export Summary.csv")
+
+# you could used read.csv(), but then you have to force a lot of the columns into numeric, so this is a less annoying way of loading a csv
+```
+
+```{r q1}
+
+n.total <- sum(pdb_stats$Total)
+n.em <- sum(pdb_stats$EM)
+n.xray <- sum(pdb_stats$`X-ray`)
+# takes the sum of the em column; then divides by the total structures
+percent_em <- round(n.em/n.total, 2) *100
+percent_em
+
+# takes the sum of the x-ray column, then divides by the total structures
+percent_xray <- round(n.xray/n.total,2) *100
+percent_xray
+```
+
+> Q2: What proportion of structures in the PDB are protein?
+
+```{r q2}
+
+proportion_Prot<-pdb_stats$Total[1]/n.total
+round(proportion_Prot, 2)  
+  
+
+
+```
+> Make a bar plot of Experimental
+
+```{r}
+
+col_list <- c("X-ray", "EM","NMR","Integrative","Multiple methods","Neutron", "Other")
+
+ggplot(pdb_stats) + 
+  aes(x=reorder(`Molecular Type`, -Total), y=Total) + 
+  geom_col() +
+  labs(title = "PBD Database Composition Oct 2025") 
+  #element_text()
+  # geom_text(pdb_stats, aes(`Molecular Type`, y=Total),
+  #           inherit.aes = FALSE,
+  #           vjust=0.5)
+```
+
+> Q3: Type HIV in the PDB website search box on the home page and determine how many HIV-1 protease structures are in the current PDB?
+
+There are currently 4,866 HIV-1 protease structures in the Protein Data Bank
+
+
+## Section 2: Visualizing the HIV-1 protease structure
+
+The Mol* viewer is embedded in many bioinformatics websites. We will visit the Mol* homepage at: https://molstar.org/viewer/. 
+
+I can insert any figure or image file using markdown format
+
+![The HIV-Pr dimer with bound inhibitor](1HSG.png)
+to find D-25 look at sequence viewer
+
+> Q4: Water molecules normally have 3 atoms. Why do we see just one atom per water molecule in this structure?
+
+In x-ray crystallography, since Hydrogen only has one electron it is not strong enough to detect.
+
+> Q5: There is a critical “conserved” water molecule in the binding site. Can you identify this water molecule? What residue number does this water molecule have
+
+Yes, I can identify the water molecule, picture above. The residure number is HOH 308
+
+> Q6: Generate and save a figure clearly showing the two distinct chains of HIV-protease along with the ligand. You might also consider showing the catalytic residues ASP 25 in each chain and the critical water (we recommend “Ball & Stick” for these side-chains). Add this figure to your Quarto document.
+
+![The catalytic ASP25 and active-site water 308 highlighted](1HSG_water.png)
+
+> Discussion Topic: Can you think of a way in which indinavir, or even larger ligands and substrates, could enter the binding site?
+
+HIV-1 protease has two β-hairpin flaps (one from each chain) that go over the active site. So they sample open → semi-open → closed conformations. The ligand could enter during the open state and once the flaps close they can bind regardless of size.
+
+
+## Section 3: Introduction to Bio3D in R
+###Bio 3D package for structural bioinformatics
+
+
+We can use the bio3d package to read and analyze biomolecular data in R: 
+
+```{r}
+library(bio3d)
+
+hiv <- read.pdb("1hsg")
+hiv
+```
+
+```{r}
+head(hiv$atom)
+```
+
+> Q7: How many amino acid residues are there in this pdb object? 
+
+198 residues 
+
+> Q8: Name one of the two non-protein residues? 
+
+water and the inhibitor
+HOH (127) and MK1 (1)
+
+> Q9: How many protein chains are in this structure? 
+
+2 protein chains  (values: A B)
+
+### Let's get the sequence
+```{r pdbSeq}
+pdbseq(hiv)
+
+# see how it goes from 1 : 99 then resets it's because it switches to chain B 
+```
+
+Let's trim to chain A and get just it's sequence
+```{r trimChain}
+chainA <- trim.pdb(hiv, chain="A")
+chainA.seq <- pdbseq(chainA)
+```
+
+Let's blast
+
+```{r blast_hiv, cache=TRUE}
+blast <- blast.pdb(chainA.seq)
+```
+
+```{r}
+head(blast$hit.tbl)
+```
+
+Plot a quick overview of blast results
+
+```{r plotBlast}
+# every dot in the pot is a hit, and it clusters the results and shown the natural transition point
+hits <- plot(blast)
+
+```
+
+```{r getAccessionNum}
+#just the accession numbers of the hits that you got
+hits$pdb.id
+```
+
+## Section 4: Comparative structure analysis of Adenylate Kinase
+
+> Q10. Which of the packages above is found only on BioConductor and not CRAN? 
+
+msa
+
+> Q11. Which of the above packages is not found on BioConductor or CRAN?: 
+
+bio3d-view
+
+> Q12. True or False? Functions from the devtools package can be used to install packages from GitHub and BitBucket? 
+
+TRUE
+
+## Predicition of function motions
+
+We can run a Normal Mode Analysis (NMA) to predict large scale motions/flexibility/dynamics of any biomolecule that we can read into R
+
+Let's look ADK
+
+```{r}
+adk <- read.pdb("1ake")
+
+adk_A <- trim.pdb(adk, chain="A")
+adk_A
+```
+
+```{r}
+m <- nma(adk_A)
+plot(m)
+```
+let's write out a "trajectory" of predicted motion
+
+```{r}
+# mktrj stand for make a trajectory
+mktrj(m, file="adk_nma.pdb")
+```
+
+## Play with 3D viewing in R
+
+We can use the new **bio3D-view** package, which is not yet on CRAN, to render interactive 3D views in R and HTML quarto output.
+
+To install from GitHub we can use the **pak** package:
+
+```{r}
+library(pak)
+#pak::pak("bioboot/bio3dview")
+library(bio3dview)
+
+view.pdb(adk)
+
+```
+
+
+> Q13. How many amino acids are in this sequence, i.e. how long is this sequence? 
+
+214 
+
+## Section 6: Normal mode analysis [optional]
+
+> Q14. What do you note about this plot? Are the black and colored lines similar or different? Where do you think they differ most and why?
+
+The black and colored lines follow a very similar pattern, so the overall fold and dynamics of the protein are conserved among the different structures. The largest differences appear at residues around 40–60 and 150–170, where the peaks in fluctuations are higher in the colored traces than in the black one. The changes could indicate confirmation changes as the enzyme changes between open and closed states.
+
+## Section 4: Comparative structure analysis of protein structure
+
+Starting with a sequence structure or strucutre ID (accession number) let's run a complete analysis pipeline
+
+```{r}
+library(bio3d)
+ id <- "1ake_A"
+ 
+ aa <- get.seq(id)
+ 
+ aa
+```
+
+```{r, cache=TRUE}
+blast <- blast.pdb(aa)
+hits <- plot(blast)
+```
+```{r}
+hits$pdb.id
+```
+
+Download all these "hits" that are similar to our starting id sequence
+```{r}
+# Download releated PDB files
+files <- get.pdb(hits$pdb.id, path="pdbs", split=TRUE, gzip=TRUE)
+```
+```{r}
+# Align releated PDBs
+pdbs <- pdbaln(files, fit = TRUE, exefile="msa")
+```
+
+```{r}
+pc.xray <- pca(pdbs)
+plot(pc.xray)
+```
+
+```{r}
+plot(pc.xray, 1:2)
+```
+```{r}
+library(bio3dview)
+mktrj(pc.xray, file="pca_results.pdb")
+```
+
