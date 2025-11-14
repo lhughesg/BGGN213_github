@@ -1,5 +1,5 @@
 # BGGN213_github
-Class work files for BGGN 213 (bioinformatics at UC San Diego) for Fall 2025
+Class work files for BGGN 213 (bioinformatics at UC San Diego) for F2025
 
 1) `git init`
 2) code
