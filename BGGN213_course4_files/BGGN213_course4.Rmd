@@ -1,0 +1,137 @@
+---
+title: "BGGN213"
+author: "Libby Gilmore"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown - R Basics
+
+```{r}
+# Tools > Global Options > click "never" saving your workspace makes it less reproducible
+
+library(ggplot2)
+```
+
+```{r, vectors}
+  
+x <-  1:5 # option and "-" generate "<-" shortcut
+x <-  1:50
+x[3] # tells you what is the third value in vector x
+letters # preset vector with all lowercase letters in the alphabet
+letters[7] # returns [1] g
+y <- c(10, 100, 4)
+y
+x <-  1:5
+x + 100
+letters[c(2,6)]
+x + c(100, 1) # adds 100 to an element, then 1 to the next element, and does so recursively. Produces a warning message but not an error message.
+```
+
+```{r, types}
+# numeric --- doubles and integers
+
+
+# logicals (boolean) --- TRUE or FALSE
+n <- c(TRUE, FALSE, T, F)
+n
+n + 100 # True is interpreted as 1, False is interpreted as 0; so adding 100 adds the value
+sum(n) # sums to 2
+# this is an example of coercion; logicals can be coerced to numerics
+x > 3
+sum(x>2) # will tell you how many trues you have
+
+# characters --- individual letters or full on strings
+y <- c("barry","monika", "chandra") # produces an error if chandra has not quotes bc it reads it as a function
+#y + 100 # cannot do math with characters; BUT they are still vectorized so you can use some things; for e.g.:
+paste(y, "loves R") # don't have to explicity loop through y, bc it is vectorized
+paste(y,"DOES NOT", "love R")
+z <- c(100,1,"barry")
+z
+# example of how numerics can be coerced to characters
+```
+
+```{r, dataframes}
+
+#data.frame() # function to make dfs generally will probably not use----
+df <- data.frame(n=1:5, s=letters[1:5], l=c(T,T,F,T,F))
+df
+df[2,2] # [row 2, col 2]
+df[2,] # returns entire row 2
+df[,3] # returns all of column 3
+
+df[c(2,4),3] # print second and fourth row in the third column
+df$l[c(2,4)] # gets third column (l), and the second and 4th row
+# key point is the $ syntax accesses all the columns
+
+# Q. print out values of "s" where n>3 --------
+df$n
+df$n > 3 # returns a logical
+df[(df$n > 3),2]
+
+# Alternatives
+inds <- df$n > 3
+inds
+df[inds,]
+df[inds,]$s
+df[inds,2]
+df[(df$n > 3),2]
+
+```
+
+```{r}
+source("http://thegrantlab.org/misc/cdc.R")
+
+#q1.
+tail(cdc, 20)
+
+
+#q2
+ggplot(data=cdc, aes(x=height, y=weight)) +
+  geom_point() +
+  xlab("Height (inches)") + 
+  ylab("Weight (pounds)") +
+  theme_bw()
+
+#q4
+cor(cdc$height, cdc$weight)
+
+#q5
+weight_kg <- cdc$weight * .454
+weight_kg
+height_m <- cdc$height * 0.0254
+
+#q6
+bmi <- (weight_kg)/(height_m^2)
+plot(height_m, bmi)
+#q7
+cor(height_m,bmi)
+
+#q8
+head(bmi >= 30, 100)
+eg <- c(TRUE, TRUE, FALSE, FALSE)
+sum(eg)
+sum(bmi >= 30) / length(bmi)
+
+cdc[1:100,]$height
+plot(cdc[1:100,]$height)
+plot(cdc[1:100, "height"])
+plot(cdc[1:100,]$height)
+```
+
+```{r}
+x <- 1:50
+
+plot(x, col="purple")
+plot(cos(x), sin(x), typ="l", col="red", lwd=3)
+
+log(10)
+log(10,base=10)
+
+```

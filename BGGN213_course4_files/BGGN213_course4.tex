@@ -1,0 +1,551 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={BGGN213},
+  pdfauthor={Libby Gilmore},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{BGGN213}
+\author{Libby Gilmore}
+\date{2025-10-10}
+
+\begin{document}
+\maketitle
+
+\subsection{R Markdown - R Basics}\label{r-markdown---r-basics}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tools \textgreater{} Global Options \textgreater{} click "never" saving your workspace makes it less reproducible}
+
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}}  \DecValTok{1}\SpecialCharTok{:}\DecValTok{5} \CommentTok{\# option and "{-}" generate "\textless{}{-}" shortcut}
+\NormalTok{x }\OtherTok{\textless{}{-}}  \DecValTok{1}\SpecialCharTok{:}\DecValTok{50}
+\NormalTok{x[}\DecValTok{3}\NormalTok{] }\CommentTok{\# tells you what is the third value in vector x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{letters }\CommentTok{\# preset vector with all lowercase letters in the alphabet}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
+## [20] "t" "u" "v" "w" "x" "y" "z"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{letters[}\DecValTok{7}\NormalTok{] }\CommentTok{\# returns [1] g}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "g"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{100}\NormalTok{, }\DecValTok{4}\NormalTok{)}
+\NormalTok{y}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  10 100   4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}}  \DecValTok{1}\SpecialCharTok{:}\DecValTok{5}
+\NormalTok{x }\SpecialCharTok{+} \DecValTok{100}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 101 102 103 104 105
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{letters[}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{6}\NormalTok{)]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "b" "f"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\SpecialCharTok{+} \FunctionTok{c}\NormalTok{(}\DecValTok{100}\NormalTok{, }\DecValTok{1}\NormalTok{) }\CommentTok{\# adds 100 to an element, then 1 to the next element, and does so recursively. Produces a warning message but not an error message.}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in x + c(100, 1): longer object length is not a multiple of shorter
+## object length
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 101   3 103   5 105
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# numeric {-}{-}{-} doubles and integers}
+
+
+\CommentTok{\# logicals (boolean) {-}{-}{-} TRUE or FALSE}
+\NormalTok{n }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\ConstantTok{TRUE}\NormalTok{, }\ConstantTok{FALSE}\NormalTok{, T, F)}
+\NormalTok{n}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  TRUE FALSE  TRUE FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{n }\SpecialCharTok{+} \DecValTok{100} \CommentTok{\# True is interpreted as 1, False is interpreted as 0; so adding 100 adds the value}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 101 100 101 100
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sum}\NormalTok{(n) }\CommentTok{\# sums to 2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# this is an example of coercion; logicals can be coerced to numerics}
+\NormalTok{x }\SpecialCharTok{\textgreater{}} \DecValTok{3}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE FALSE FALSE  TRUE  TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sum}\NormalTok{(x}\SpecialCharTok{\textgreater{}}\DecValTok{2}\NormalTok{) }\CommentTok{\# will tell you how many trues you have}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# characters {-}{-}{-} individual letters or full on strings}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"barry"}\NormalTok{,}\StringTok{"monika"}\NormalTok{, }\StringTok{"chandra"}\NormalTok{) }\CommentTok{\# produces an error if chandra has not quotes bc it reads it as a function}
+\CommentTok{\#y + 100 \# cannot do math with characters; BUT they are still vectorized so you can use some things; for e.g.:}
+\FunctionTok{paste}\NormalTok{(y, }\StringTok{"loves R"}\NormalTok{) }\CommentTok{\# don\textquotesingle{}t have to explicity loop through y, bc it is vectorized}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "barry loves R"   "monika loves R"  "chandra loves R"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{paste}\NormalTok{(y,}\StringTok{"DOES NOT"}\NormalTok{, }\StringTok{"love R"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "barry DOES NOT love R"   "monika DOES NOT love R" 
+## [3] "chandra DOES NOT love R"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{z }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{100}\NormalTok{,}\DecValTok{1}\NormalTok{,}\StringTok{"barry"}\NormalTok{)}
+\NormalTok{z}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "100"   "1"     "barry"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# example of how numerics can be coerced to characters}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#data.frame() \# function to make dfs generally will probably not use{-}{-}{-}{-}}
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{n=}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{, }\AttributeTok{s=}\NormalTok{letters[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{], }\AttributeTok{l=}\FunctionTok{c}\NormalTok{(T,T,F,T,F))}
+\NormalTok{df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   n s     l
+## 1 1 a  TRUE
+## 2 2 b  TRUE
+## 3 3 c FALSE
+## 4 4 d  TRUE
+## 5 5 e FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{] }\CommentTok{\# [row 2, col 2]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "b"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[}\DecValTok{2}\NormalTok{,] }\CommentTok{\# returns entire row 2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   n s    l
+## 2 2 b TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[,}\DecValTok{3}\NormalTok{] }\CommentTok{\# returns all of column 3}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  TRUE  TRUE FALSE  TRUE FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{),}\DecValTok{3}\NormalTok{] }\CommentTok{\# print second and fourth row in the third column}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{l[}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{)] }\CommentTok{\# gets third column (l), and the second and 4th row}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# key point is the $ syntax accesses all the columns}
+
+\CommentTok{\# Q. print out values of "s" where n\textgreater{}3 {-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{n}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1 2 3 4 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{n }\SpecialCharTok{\textgreater{}} \DecValTok{3} \CommentTok{\# returns a logical}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE FALSE FALSE  TRUE  TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[(df}\SpecialCharTok{$}\NormalTok{n }\SpecialCharTok{\textgreater{}} \DecValTok{3}\NormalTok{),}\DecValTok{2}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "d" "e"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Alternatives}
+\NormalTok{inds }\OtherTok{\textless{}{-}}\NormalTok{ df}\SpecialCharTok{$}\NormalTok{n }\SpecialCharTok{\textgreater{}} \DecValTok{3}
+\NormalTok{inds}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE FALSE FALSE  TRUE  TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[inds,]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   n s     l
+## 4 4 d  TRUE
+## 5 5 e FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[inds,]}\SpecialCharTok{$}\NormalTok{s}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "d" "e"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[inds,}\DecValTok{2}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "d" "e"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[(df}\SpecialCharTok{$}\NormalTok{n }\SpecialCharTok{\textgreater{}} \DecValTok{3}\NormalTok{),}\DecValTok{2}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "d" "e"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{source}\NormalTok{(}\StringTok{"http://thegrantlab.org/misc/cdc.R"}\NormalTok{)}
+
+\CommentTok{\#q1.}
+\FunctionTok{tail}\NormalTok{(cdc, }\DecValTok{20}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         genhlth exerany hlthplan smoke100 height weight wtdesire age gender
+## 19981 excellent       1        1        1     75    195      195  36      m
+## 19982 very good       0        1        1     74    210      210  40      m
+## 19983 very good       1        0        1     63    171      130  31      f
+## 19984 very good       1        1        1     71    190      180  41      m
+## 19985      good       1        1        1     69    180      160  57      m
+## 19986 very good       1        1        1     64    120      115  71      f
+## 19987 excellent       1        1        1     63    140      115  38      f
+## 19988      good       1        1        0     72    200      195  40      m
+## 19989 very good       1        1        1     74    230      190  53      m
+## 19990      good       1        1        0     73    230      200  38      m
+## 19991 excellent       1        1        0     71    195      190  43      m
+## 19992 very good       1        1        1     72    210      175  52      m
+## 19993 very good       1        1        0     71    180      180  36      m
+## 19994 very good       0        1        1     63    165      120  31      f
+## 19995      good       0        1        1     69    224      224  73      m
+## 19996      good       1        1        0     66    215      140  23      f
+## 19997 excellent       0        1        0     73    200      185  35      m
+## 19998      poor       0        1        0     65    216      150  57      f
+## 19999      good       1        1        0     67    165      165  81      f
+## 20000      good       1        1        1     69    170      165  83      m
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#q2}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{cdc, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{height, }\AttributeTok{y=}\NormalTok{weight)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Height (inches)"}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Weight (pounds)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_bw}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{BGGN213_course4_files/figure-latex/unnamed-chunk-2-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#q4}
+\FunctionTok{cor}\NormalTok{(cdc}\SpecialCharTok{$}\NormalTok{height, cdc}\SpecialCharTok{$}\NormalTok{weight)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.5553222
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{:}\DecValTok{50}
+
+\FunctionTok{plot}\NormalTok{(x, }\AttributeTok{col=}\StringTok{"purple"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{BGGN213_course4_files/figure-latex/unnamed-chunk-3-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{cos}\NormalTok{(x), }\FunctionTok{sin}\NormalTok{(x), }\AttributeTok{typ=}\StringTok{"l"}\NormalTok{, }\AttributeTok{col=}\StringTok{"red"}\NormalTok{, }\AttributeTok{lwd=}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{BGGN213_course4_files/figure-latex/unnamed-chunk-3-2.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{log}\NormalTok{(}\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2.302585
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{log}\NormalTok{(}\DecValTok{10}\NormalTok{,}\AttributeTok{base=}\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+
+\end{document}
