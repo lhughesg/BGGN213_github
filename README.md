@@ -1,20 +1,20 @@
-# Class Index
+## Bioinformatics Class
 Class work files for [BGGN 213 (bioinformatics at UC San Diego)](https://bioboot.github.io/bggn213_F25/) for F2025
 
-Class 1: [Website Link]()
+## Class content
 
-Class 2:
+Class 4: [R fundamentals]()
 
-Class 3:
+Class 5: [Data Exploration and visualization in R]()
 
-Class 4:
+Class 6: [Writing your own R functions]()
 
-Class 5:
+Class 7: [Introduction to Machine Learning]()
 
-Class 6:
+Class 8: [Mini-project]()
 
-Class 7:
+Class 9: [Strucutral Bioinformatics]()
 
-Class 8:
+Class 10: [Mini-project]()
 
-Class 9:
+Class 11: [AlphaFold and Structural Prediction]
