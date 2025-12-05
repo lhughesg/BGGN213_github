@@ -23,11 +23,10 @@ Class 12: [Transcriptomic, RNA-Seq analysis, and interpretation of gene lists](C
 
 Class 13: [RNA-Seq mini projects](Class13/class13.md)
 
-Class 14: [Hands-on with Git and Github]()
+Class 14: Hands-on with Git and Github
 
-Class 15: [Obtaining and processing SRA datasets on AWS](class16/class16.md)
+Class 16: [Obtaining and processing SRA datasets on AWS](class16/class16.md)
 
+Class 17: [RNA-Seq Galaxy](class17/class17workflow.md)
 
-[RNA-Seq Galaxy](class17/class17workflow.md)
-
-[Pertussis and the CMI-PB mini project](class18/class18_assignment_A69047570.md)
+Class 18: [Pertussis and the CMI-PB mini project](class18/class18_assignment_A69047570.md)
