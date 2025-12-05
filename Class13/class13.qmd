@@ -1,8 +1,8 @@
 ---
 title: "Class 13: RNA-Seq analysis mini-project"
-author: "Libby Gilmore (A69047570)"
+author: "Libby Gilmore"
 toc: true
-format: pdf
+format: gfm
 editor: visual
 ---
 
