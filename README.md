@@ -21,6 +21,6 @@ Class 11: [AlphaFold and Structural Prediction]()
 
 Class 12: [Transcriptomic, RNA-Seq analysis, and interpretation of gene lists]()
 
-Class 13: [RNA-Seq mini projects]()
+Class 13: [RNA-Seq mini projects](Class13/class13.md)
 
 Class 14: [Hands-on with Git and Github]()
