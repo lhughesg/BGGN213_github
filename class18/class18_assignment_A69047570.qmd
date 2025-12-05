@@ -2,7 +2,7 @@
 title: "Class 18: Pertussis and the CMI-PB mini project"
 author: "Libby Gilmore (pid: A69047570)"
 toc: true
-format: html
+format: pdf
 editor: visual
 ---
 ## Background
@@ -271,3 +271,9 @@ ggplot(pt) +
 ```
 
 ### System setup
+
+```{r}
+sessionInfo()
+```
+
+
