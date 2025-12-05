@@ -1,0 +1,82 @@
+pThis is the nano text editor - as simple as it comes
+
+git - version control
+pwd - print working directory
+cd - change directory
+ls - list contents
+cd Desktop - create directory
+mkdir - make directory
+rm - remove
+nano - creates a file; if applicable and opens a text editor 
+cp: copy a file (cp source destination_dir)
+mv: rename or move a file (my source results)
+less: see contents of a text file
+apt-get: find, install and upgrade software packages on Debian based Linux machines
+sudo: in-front of these commands gives us administrator (or in UNIX speak ‘superuser’) permissions to install packages that a normal user does not have
+tar -xvf: unzip files and set some stuff
+
+Process control
+^C ctrl + C: kills a running job
+^Z ctrl + Z: suspends a running job, temporarily pauses; allows you to send it to background or foreground
+top: displays the top running processes
+kill PID. kill a job with this PID number
+&: if you put an & at the end of a code line, it will run the process in the background
+    - e.g. blastp -query mm-second.fa -db zebrafish.1.protein.faa -out my_results_zebrafish2.tsv -outfmt 6 &
+
+scp -i KEYFILE USERNAME@REMOTE_MACHINE:remoteFILE LOCALFILE
+     scp -i "~/Downloads/bggn213_lg.pem" ubuntu@ec2-35-86-76-10.us-west-2.compute.amazonaws.com:~/work/my_results_zebrafish2.tsv .
+     - this needs to be run on the local computer
+*: wild card match everything character
+
+
+absolute path: where stuff is spelled out from the root of the file systems, e.g. `/Users/elizabethgilmore/Desktop/UCSD_Salk/BGGN213/class15/5P21.pdb.gz`
+
+relative path: where stuff is relative to where you are currently (i.e your current working directory)
+
+Useful shortcuts:
+- "~" and ".."
+    - "~" is the shortcut for home area
+    - ".." bumps you up into another directory
+
+
+Instance ID: i-02dc5c6a6f8f7e4b5 (bggn213_libby)
+- Open an SSH client.
+
+- Locate your private key file. The key used to launch this instance is bggn213_lg.pem
+
+- Run this command, if necessary, to ensure your key is not publicly viewable.
+chmod 400 "bggn213_lg.pem"
+
+- Connect to your instance using its Public DNS:
+ec2-35-86-76-10.us-west-2.compute.amazonaws.com
+
+Example:
+NOTE: the numbers change so click the instance >> connect >> copy the new machine code
+ssh -i "bggn213_lg.pem" ubuntu@ec2-35-86-76-10.us-west-2.compute.amazonaws.com
+
+
+grep -c "@SRR" *.fastq
+grep -c "@" *.fastq
+
+psuedoalignment: fast approach to analysis of RNA-seq; takes cDNA chops it into bits, 
+into kmers and looks for matches to genes; just want to see if there is more of one 
+gene around than another gene
+
+man kallisto
+kallisto cite <-- tells you the citation
+
+to make script executable: chmod +x run_kallisto_quant.sh 
+    - so instead of saying bash run_kallisto_quant; you can just say ./run_kallisto_quant.sh
+
+
+
+ls SRR2156848_quant
+- two abundance files, and as .json file
+
+Looks at all quant directories and list contents
+ls *_quant
+
+/home/ubuntu/work/SRR2156848_quant
+/home/ubuntu/work/SRR2156849_quant
+/home/ubuntu/work/SRR2156850_quant
+/home/ubuntu/work/SRR2156851_quants

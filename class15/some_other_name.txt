@@ -1,0 +1,20 @@
+pThis is the nano text editor - as simple as it comes
+
+git - version control
+pwd - print working directory
+cd - change directory
+ls - list contents
+cd Desktop - create directory
+mkdir - make directory
+rm - remove
+nano - creates a file; if applicable and opens a text editor 
+cp: copy a file (cp source destination_dir)
+
+absolute path: where stuff is spelled out from the root of the file systems, e.g. `/Users/elizabethgilmore/Desktop/UCSD_Salk/BGGN213/class15/5P21.pdb.gz`
+
+relative path: where stuff is relative to where you are currently (i.e your current working directory)
+
+Useful shortcuts:
+- "~" and ".."
+    - "~" is the shortcut for home area
+    - ".." bumps you up into another directory
