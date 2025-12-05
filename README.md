@@ -1,9 +1,20 @@
-# BGGN213_github
-Class work files for BGGN 213 (bioinformatics at UC San Diego) for F2025
+# Class Index
+Class work files for [BGGN 213 (bioinformatics at UC San Diego)](https://bioboot.github.io/bggn213_F25/) for F2025
 
-1) `git init`
-2) code
-3) add files to stage via `git add fileName.qmd`
-4) take snapshot `git commit`
-5) `git push` 
-6) if file change was made online, you click `git pull`
+Class 1: [Website Link]()
+
+Class 2:
+
+Class 3:
+
+Class 4:
+
+Class 5:
+
+Class 6:
+
+Class 7:
+
+Class 8:
+
+Class 9:
