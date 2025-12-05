@@ -24,4 +24,3 @@ Class 12: [Transcriptomic, RNA-Seq analysis, and interpretation of gene lists]()
 Class 13: [RNA-Seq mini projects]()
 
 Class 14: [Hands-on with Git and Github]()
->>>>>>> a6567615ce203d8522123819ae475da05b469017
