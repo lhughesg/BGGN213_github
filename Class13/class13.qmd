@@ -2,7 +2,7 @@
 title: "Class 13: RNA-Seq analysis mini-project"
 author: "Libby Gilmore (A69047570)"
 toc: true
-format: html
+format: pdf
 editor: visual
 ---
 
@@ -17,6 +17,8 @@ Trapnell C, Hendrickson DG, Sauvageau M, Goff L et al. "Differential analysis of
 The authors report on differential analysis of lung fibroblasts in response to loss of the developmental transcription factor HOXA1. Their results and others indicate that HOXA1 is required for lung fibroblast and HeLa cell cycle progression. In particular their analysis show that "loss of HOXA1 results in significant expression level changes in thousands of individual transcripts, along with isoform switching events in key regulators of the cell cycle". For our session we have used their Sailfish gene-level estimated counts and hence are restricted to protein-coding genes only.
 
 ## Data Import
+
+> Q. Complete the code below to remove the troublesome first column from countData
 
 ```{r}
 counts <- read.csv("GSE37704_featurecounts.csv", row.names=1)
@@ -43,6 +45,8 @@ counts <- counts[,-1]
 ```
 
 Also let's remove low count genes
+
+> Q. Complete the code below to filter countData to exclude genes (i.e. rows) where we have 0 read count across all samples (i.e. columns).
 
 ```{r}
 tot.counts <- rowSums(counts)
@@ -102,6 +106,12 @@ dds <- DESeq(dds)
 res <- results(dds)
 ```
 
+> Call the summary() function on your results to get a sense of how many genes are up or down-regulated at the default 0.1 p-value cutoff.
+
+```{r}
+summary(res)
+```
+
 ```{r}
 head(res)
 ```
@@ -139,9 +149,21 @@ res$name= mapIds(org.Hs.eg.db,
 ## Visualize Results
 
 ```{r}
+plot( res$log2FoldChange, -log(res$padj) )
+```
+
+```{r}
 library(ggplot2)
 
 my_cols <- rep("gray", nrow(res))
+
+# Color red the genes with absolute fold change above 2
+my_cols[ abs(res$log2FoldChange) > 2 ] <- "red"
+
+# Color blue the genes with adjusted p-value below 0.01 and absolute fold change more than 2
+
+my_cols[ res$padj < 0.01 & abs(res$log2FoldChange) > 2 ] <- "blue"
+
 
 ggplot(res) +
   aes(log2FoldChange, -log(padj)) +
@@ -152,6 +174,8 @@ ggplot(res) +
 
 
 ## Pathway analysis
+
+> Q. Use the mapIDs() function multiple times to add SYMBOL, ENTREZID and GENENAME annotation to our results by completing the code below.
 
 ```{r}
 library(gage)
@@ -177,6 +201,7 @@ keggres = gage(foldchanges, gsets=kegg.sets.hs)
 ```
 
 ```{r}
+library(pathview)
 pathview(gene.data=foldchanges, pathway.id="hsa04110")
 ```
 ```{r}
@@ -197,15 +222,49 @@ keggresids
 ```{r}
 pathview(gene.data=foldchanges, pathway.id=keggresids, species="hsa")
 ```
+
 ```{r}
 head(keggres$less)
 ```
 
 Insert figure for this pathway
 
-![Asthma pathway from KEGG with my differentially expressed genes highlighted](hsa04640.pathview.png)
+![Hematopoietic cell lineage](hsa04640.pathview.png)
+
+![Jak-STAT signaling pathway](hsa00140.pathview.png)
+
+![Steroid hormone biosynthesis](hsa04142.pathview.png)
+
+![Lysosome](hsa04330.pathview.png)
+
+![Notch signaling pathway](hsa05310.pathview.png)
+
+> Q. Can you do the same procedure as above to plot the pathview figures for the top 5 down-reguled pathways?
+
+```{r}
+## Focus on top 5 upregulated pathways here for demo purposes only
+keggrespathways_less <- rownames(keggres$less)[1:5]
+
+# Extract the 8 character long IDs part of each string
+keggresids = substr(keggrespathways_less, start=1, stop=8)
+keggresids
+
+pathview(gene.data=foldchanges, pathway.id=keggresids, species="hsa")
+```
+
+![Cell cycle](hsa04110.pathview.png)
+
+![DNA replication](hsa03030.pathview.png)
+
+![RNA transport](hsa03013.pathview.png)
+
+![Homologous recombination](hsa03440.pathview.png)
+
+![Oocyte meiosis](hsa04114.pathview.png)
 
 ## Save results
+
+> Q. Finally for this section let's reorder these results by adjusted p-value and save them to a CSV file in your current project directory.
 
 ```{r}
 write.csv(res, file="myresults.csv")
@@ -240,6 +299,7 @@ To use the website viewer we want to upload our set of gene symbols for the gene
 
 Then, to perform pathway analysis online go to the Reactome website (https://reactome.org/PathwayBrowser/#TOOL=AT). Select “choose file” to upload your significant gene list. Then, select the parameters “Project to Humans”, then click “Analyze”.
 
+
 ```{r}
 sig_genes <- res[res$padj <= 0.05 & !is.na(res$padj), "symbol"]
 print(paste("Total number of significant genes:", length(sig_genes)))
@@ -249,3 +309,9 @@ print(paste("Total number of significant genes:", length(sig_genes)))
 write.table(sig_genes, file="significant_genes.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
 ```
 
+> Q: What pathway has the most significant “Entities p-value”? Do the most significant pathways listed match your previous KEGG results? What factors could cause differences between the two methods?
+
+The mitosis pathway has the most significant Entities p-value. This matches our previous KEGG results, where the cell cycle pathway was the most significantly downregulated pathway. Both pathways are related to cell division and proliferation. Differences between the two methods could arise from variations in pathway definitions, gene annotations, and statistical approaches used in the analyses.
+
+![Reactome screenshot](screenshot_reactome_path.png)
+![Reactome screenshot2](reactome_mitosis.png)
