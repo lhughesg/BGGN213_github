@@ -1,10 +1,27 @@
-# BGGN213_github
-Class work files for BGGN 213 (bioinformatics at UC San Diego) for F2025
+## Bioinformatics Class
+Class work files for [BGGN 213 (bioinformatics at UC San Diego)](https://bioboot.github.io/bggn213_F25/) for F2025
 
-1) `git init`
-2) code
-3) add files to stage via `git add fileName.qmd`
-4) take snapshot `git commit`
-5) `git push` 
-6) if file change was made online, you click `git pull`
-7) repeat steps 2-6 as needed
+## Class content
+
+Class 4: [R fundamentals]()
+
+Class 5: [Data Exploration and visualization in R]()
+
+Class 6: [Writing your own R functions]()
+
+Class 7: [Introduction to Machine Learning]()
+
+Class 8: [Mini-project]()
+
+Class 9: [Strucutral Bioinformatics]()
+
+Class 10: [Mini-project]()
+
+Class 11: [AlphaFold and Structural Prediction]()
+
+Class 12: [Transcriptomic, RNA-Seq analysis, and interpretation of gene lists]()
+
+Class 13: [RNA-Seq mini projects]()
+
+Class 14: [Hands-on with Git and Github]()
+>>>>>>> a6567615ce203d8522123819ae475da05b469017
