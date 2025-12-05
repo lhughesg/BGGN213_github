@@ -9,7 +9,7 @@ Class 5: [Data Exploration and visualization in R]()
 
 Class 6: [Writing your own R functions]()
 
-Class 7: [Introduction to Machine Learning]()
+Class 7: [Introduction to Machine Learning](Class07/class7lab.md)
 
 Class 8: [Mini-project]()
 
