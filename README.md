@@ -7,3 +7,4 @@ Class work files for BGGN 213 (bioinformatics at UC San Diego) for F2025
 4) take snapshot `git commit`
 5) `git push` 
 6) if file change was made online, you click `git pull`
+7) repeat steps 2-6 as needed
